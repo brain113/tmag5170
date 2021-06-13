@@ -8,6 +8,7 @@ edition = "2018"
 readme = "README.md"
 name = "tmag5170"
 version = "0.1.0"
+repository = "https://github.com/brain113/tmag5170"
 
 [dev-dependencies]
 cortex-m = "0.7.2"
