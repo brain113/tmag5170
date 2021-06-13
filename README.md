@@ -12,10 +12,6 @@ measurement.
 ## The device
 https://www.ti.com/product/TMAG5170-Q1
 
-> A template for building applications for ARM Cortex-M microcontrollers
-
-This project is developed and maintained by the [Cortex-M team][team].
-
 ## Usage
 
 Include this driver to your Cargo.toml
@@ -91,10 +87,9 @@ To build embedded programs using this template you'll need:
 
 This template is licensed under either of
 
-- Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or
-  http://www.apache.org/licenses/LICENSE-2.0)
+- Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
 
-- MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
+- MIT license (http://opensource.org/licenses/MIT)
 
 at your option.
 
