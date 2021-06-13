@@ -107,3 +107,8 @@ to intervene to uphold that code of conduct.
 
 [CoC]: https://www.rust-lang.org/policies/code-of-conduct
 [team]: https://github.com/rust-embedded/wg#the-cortex-m-team
+
+## Limitations
+
+At the moment the CRC4 table is stored in every tmag5170 instance.
+This should be not a problem with the only tmag5170 in the systemm
