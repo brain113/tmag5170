@@ -9,14 +9,14 @@ use rtt_target::{rprintln, rtt_init_print};
 use cortex_m::asm;
 use cortex_m_rt::entry;
 use stm32f3xx_hal::{pac, prelude::*, spi::Spi};
-use tmag5170::{self, ExtError, device_config, sensor_config, system_config, alert_config};
+use tmag5170::{self, alert_config, device_config, sensor_config, system_config, ExtError};
 
 #[entry]
 fn main() -> ! {
     let dp = pac::Peripherals::take().unwrap();
 
     let mut flash = dp.FLASH.constrain();
-    let mut rcc =  dp.RCC.constrain();
+    let mut rcc = dp.RCC.constrain();
     let clocks = rcc.cfgr.sysclk(48.MHz()).freeze(&mut flash.acr);
     let mut gpioa = dp.GPIOA.split(&mut rcc.ahb);
 
@@ -32,9 +32,15 @@ fn main() -> ! {
         .pa8
         .into_pull_up_input(&mut gpioa.moder, &mut gpioa.pupdr);
 
-    let sck = gpioa.pa5.into_af5_push_pull(&mut gpioa.moder, &mut gpioa.otyper, &mut gpioa.afrl);
-    let miso = gpioa.pa6.into_af5_push_pull(&mut gpioa.moder, &mut gpioa.otyper, &mut gpioa.afrl);
-    let mosi = gpioa.pa7.into_af5_push_pull(&mut gpioa.moder, &mut gpioa.otyper, &mut gpioa.afrl);
+    let sck = gpioa
+        .pa5
+        .into_af5_push_pull(&mut gpioa.moder, &mut gpioa.otyper, &mut gpioa.afrl);
+    let miso = gpioa
+        .pa6
+        .into_af5_push_pull(&mut gpioa.moder, &mut gpioa.otyper, &mut gpioa.afrl);
+    let mosi = gpioa
+        .pa7
+        .into_af5_push_pull(&mut gpioa.moder, &mut gpioa.otyper, &mut gpioa.afrl);
 
     let spi = Spi::spi1(
         dp.SPI1,
@@ -55,7 +61,6 @@ fn main() -> ! {
         .set_y_range(sensor_config::Range::A1_100mT_A2_300mT)
         .set_x_range(sensor_config::Range::A1_100mT_A2_300mT);
     let _ = tmag5170.apply_sensor_config(config);
-
 
     let config = system_config::SystemConfig::new()
         .set_diag_sel(system_config::DiagSel::AllDataInSeq)
@@ -92,19 +97,18 @@ fn main() -> ! {
         for _i in 0..50_000 {
             asm::nop();
         }
-    
+
         // wait for alert event
         while alert.is_high().unwrap() {}
-    
+
         let res = tmag5170.read_am();
-    
+
         match res {
-            Err(ext) => 
-                match ext {
-                    ExtError::CrcError => rprintln!("Crc Error"),
-                    ExtError::E(_e) => rprintln!("SPI Error"),
-                },
-                Ok((a,m)) => rprintln!("Angle {:3} deg, magnitude {}", a / 8, m),
+            Err(ext) => match ext {
+                ExtError::CrcError => rprintln!("Crc Error"),
+                ExtError::E(_e) => rprintln!("SPI Error"),
+            },
+            Ok((a, m)) => rprintln!("Angle {:3} deg, magnitude {}", a / 8, m),
         }
     }
 }

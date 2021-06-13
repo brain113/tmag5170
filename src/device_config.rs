@@ -1,5 +1,4 @@
-
-/// Enables additional sampling of the sensor data to reduce the noise 
+/// Enables additional sampling of the sensor data to reduce the noise
 /// effect (or to increase resolution)
 pub enum ConvAvg {
     /// 1x - 13.33Kbps (3-axes) or 40Kpbs (1 axis)
@@ -32,7 +31,6 @@ pub enum MagTempco {
     /// 0.2%/°C (Ceramic)
     Ceramic = 0x03,
 }
-
 
 /// Selects Operating Mode
 pub enum OperatingMode {
@@ -94,43 +92,43 @@ impl DeviceConfig {
     }
 
     /// Set ConvAvg field
-    pub fn set_conv_avg(mut self, conv_avg : ConvAvg) -> Self {
+    pub fn set_conv_avg(mut self, conv_avg: ConvAvg) -> Self {
         self.config = self.config & !(0b111 << 12) | ((conv_avg as u16) << 12);
         self
     }
 
     /// Set MagTempco field
-    pub fn set_mag_tempco(mut self, mag_tempco : MagTempco) -> Self {
+    pub fn set_mag_tempco(mut self, mag_tempco: MagTempco) -> Self {
         self.config = self.config & !(0b11 << 8) | ((mag_tempco as u16) << 8);
         self
     }
 
     /// Set OperatingMode field
-    pub fn set_operating_mode(mut self, operating_mode : OperatingMode) -> Self {
+    pub fn set_operating_mode(mut self, operating_mode: OperatingMode) -> Self {
         self.config = self.config & !(0b111 << 4) | ((operating_mode as u16) << 4);
         self
     }
 
     /// Enables data acquisition of the temperature channel
-    pub fn set_t_en(mut self, t_en : bool) -> Self {
+    pub fn set_t_en(mut self, t_en: bool) -> Self {
         self.config = self.config & !(0b1 << 3) | ((t_en as u16) << 3);
         self
     }
 
     /// Temperature Conversion Rate. It is linked to the CONV_AVG field
-    pub fn set_t_rate(mut self, t_rate : TRate) -> Self {
+    pub fn set_t_rate(mut self, t_rate: TRate) -> Self {
         self.config = self.config & !(0b1 << 2) | ((t_rate as u16) << 2);
         self
     }
 
     /// Enables temperature limit check
-    pub fn set_t_limit_check_en(mut self, t_limit_check_en : bool) -> Self {
+    pub fn set_t_limit_check_en(mut self, t_limit_check_en: bool) -> Self {
         self.config = self.config & !(0b1 << 1) | ((t_limit_check_en as u16) << 1);
         self
     }
 
     /// Enables device on-chip temp sensor to improve linearization of magnetic sensor output
-    pub fn set_t_comp_en(mut self, comp_en : bool) -> Self {
+    pub fn set_t_comp_en(mut self, comp_en: bool) -> Self {
         self.config = self.config & !(0b1 << 0) | ((comp_en as u16) << 0);
         self
     }

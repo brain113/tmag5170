@@ -4,14 +4,13 @@
 //!
 //! [`embedded-hal`]: https://docs.rs/embedded-hal/0.2
 
-
 #![deny(missing_docs)]
 #![deny(warnings)]
 #![no_std]
 
-use embedded_hal::blocking::spi::{Transfer};
+use embedded_hal::blocking::spi::Transfer;
 use embedded_hal::digital::v2::OutputPin;
-use embedded_hal::spi::{Mode};
+use embedded_hal::spi::Mode;
 
 use crc_all::Crc;
 
@@ -34,7 +33,7 @@ pub const MODE: Mode = embedded_hal::spi::MODE_0;
 pub struct Tmag5170<SPI, CS> {
     spi: SPI,
     cs: CS,
-    crc : Crc<u8>, // TODO: to move crc table outside of tmag instance
+    crc: Crc<u8>, // TODO: to move crc table outside of tmag instance
 }
 
 /// TMAG5170-Q1 error type
@@ -61,7 +60,7 @@ where
 
     fn write_register(&mut self, reg: Register, value: u16, cmd: u8) -> Result<(), ExtError<E>> {
         self.crc.init();
-        
+
         let mut buffer: [u8; 4] = [0; 4];
         let value_bytes = value.to_be_bytes();
 
@@ -97,7 +96,7 @@ where
 
     fn read_register(&mut self, reg: Register, cmd: u8) -> Result<u16, ExtError<E>> {
         self.crc.init();
-        
+
         let mut buffer: [u8; 4] = [0; 4];
 
         buffer[0] = reg.addr() | 0x80; // Set MSB to indicate read operation
@@ -124,7 +123,7 @@ where
         let calc_crc4 = self.crc.finish();
 
         if packet_crc4 == calc_crc4 {
-            let value= ((buffer[1] as u16) << 8) + buffer[2] as u16;
+            let value = ((buffer[1] as u16) << 8) + buffer[2] as u16;
             Ok(value)
         } else {
             Err(ExtError::CrcError)
@@ -133,7 +132,7 @@ where
 
     fn read_special(&mut self, cmd: u8) -> Result<(u16, u16), ExtError<E>> {
         self.crc.init();
-        
+
         let mut buffer: [u8; 4] = [0; 4];
 
         buffer[0] = 0x80; // Set MSB to indicate read operation
@@ -160,8 +159,8 @@ where
         let calc_crc4 = self.crc.finish();
 
         if packet_crc4 == calc_crc4 {
-            let ch1= ((buffer[1] as u16) << 4) + (buffer[2] & 0x0f) as u16;
-            let ch2= ((buffer[0] as u16) << 4) + (buffer[2] >> 4) as u16;
+            let ch1 = ((buffer[1] as u16) << 4) + (buffer[2] & 0x0f) as u16;
+            let ch2 = ((buffer[0] as u16) << 4) + (buffer[2] >> 4) as u16;
             Ok((ch1, ch2))
         } else {
             Err(ExtError::CrcError)
@@ -197,7 +196,7 @@ where
         let (a, m) = self.read_special(0x00)?;
 
         Ok((a, m))
-    } 
+    }
 
     /// Reads TMAG5170-Q1 CONV_STATUS register in raw format.
     pub fn read_conv_status_register(&mut self) -> Result<i16, ExtError<E>> {
@@ -206,15 +205,15 @@ where
         Ok(s as i16)
     }
 
-   /// Reads TMAG5170-Q1 AFE_STATUS register in raw format.
-   pub fn read_afe_status_register(&mut self) -> Result<i16, ExtError<E>> {
+    /// Reads TMAG5170-Q1 AFE_STATUS register in raw format.
+    pub fn read_afe_status_register(&mut self) -> Result<i16, ExtError<E>> {
         let s = self.read_register(Register::AFE_STATUS, 0x00)?;
 
         Ok(s as i16)
     }
 
-   /// Reads TMAG5170-Q1 SYS_STATUS register in raw format.
-   pub fn read_sys_status_register(&mut self) -> Result<i16, ExtError<E>> {
+    /// Reads TMAG5170-Q1 SYS_STATUS register in raw format.
+    pub fn read_sys_status_register(&mut self) -> Result<i16, ExtError<E>> {
         let s = self.read_register(Register::SYS_STATUS, 0x00)?;
 
         Ok(s as i16)
@@ -227,9 +226,7 @@ where
         Ok(tc as i16)
     }
 
-
-
-    /// Apply  TMAG5170-Q1 AlertConfig 
+    /// Apply  TMAG5170-Q1 AlertConfig
     pub fn conv_start(&mut self) -> Result<(), ExtError<E>> {
         self.read_register(Register::DEVICE_CONFIG, 0x01)?;
 
@@ -237,27 +234,39 @@ where
     }
 
     /// Apply  TMAG5170-Q1 DeviceConfig
-    pub fn apply_device_config(&mut self, config : device_config::DeviceConfig) -> Result<(), ExtError<E>> {
+    pub fn apply_device_config(
+        &mut self,
+        config: device_config::DeviceConfig,
+    ) -> Result<(), ExtError<E>> {
         self.write_register(Register::DEVICE_CONFIG, config.to_u16(), 0x00)?;
 
         Ok(())
     }
     /// Apply  TMAG5170-Q1 SensorConfig
-    pub fn apply_sensor_config(&mut self, config : sensor_config::SensorConfig) -> Result<(), ExtError<E>> {
+    pub fn apply_sensor_config(
+        &mut self,
+        config: sensor_config::SensorConfig,
+    ) -> Result<(), ExtError<E>> {
         self.write_register(Register::SENSOR_CONFIG, config.to_u16(), 0x00)?;
 
         Ok(())
     }
 
-    /// Apply  TMAG5170-Q1 SystemConfig 
-    pub fn apply_system_config(&mut self, config : system_config::SystemConfig) -> Result<(), ExtError<E>> {
+    /// Apply  TMAG5170-Q1 SystemConfig
+    pub fn apply_system_config(
+        &mut self,
+        config: system_config::SystemConfig,
+    ) -> Result<(), ExtError<E>> {
         self.write_register(Register::SYSTEM_CONFIG, config.to_u16(), 0x00)?;
 
         Ok(())
     }
 
-    /// Apply  TMAG5170-Q1 AlertConfig 
-    pub fn apply_alert_config(&mut self, config : alert_config::AlertConfig) -> Result<(), ExtError<E>> {
+    /// Apply  TMAG5170-Q1 AlertConfig
+    pub fn apply_alert_config(
+        &mut self,
+        config: alert_config::AlertConfig,
+    ) -> Result<(), ExtError<E>> {
         self.write_register(Register::ALERT_CONFIG, config.to_u16(), 0x00)?;
 
         Ok(())

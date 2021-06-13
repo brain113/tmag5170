@@ -1,5 +1,3 @@
-
-
 /// Latched ALERT Mode Select
 pub enum AlertLatch {
     /// ALERT sources are not latched. ALERT is asserted only
@@ -38,8 +36,6 @@ pub enum ThrxCount {
 
     /// 4-Conversion Results
     ConvResult4 = 0x03,
-
-
 }
 
 /// Configure Device Operation Modes - ALERT_CONFIG
@@ -69,57 +65,56 @@ impl AlertConfig {
     }
 
     /// Set AlertLatch field
-    pub fn set_alert_latch(mut self, alert_latch : AlertLatch) -> Self {
+    pub fn set_alert_latch(mut self, alert_latch: AlertLatch) -> Self {
         self.config = self.config & !(0b1 << 13) | ((alert_latch as u16) << 13);
         self
     }
 
     /// Set AlertMode field
-    pub fn set_alert_mode(mut self, alert_mode : AlertMode) -> Self {
+    pub fn set_alert_mode(mut self, alert_mode: AlertMode) -> Self {
         self.config = self.config & !(0b1 << 12) | ((alert_mode as u16) << 12);
         self
     }
 
     /// Set AlertMode field
-    pub fn set_status_alrt_enable(mut self, status_alrt_enable : bool) -> Self {
+    pub fn set_status_alrt_enable(mut self, status_alrt_enable: bool) -> Self {
         self.config = self.config & !(0b1 << 11) | ((status_alrt_enable as u16) << 11);
         self
     }
 
     /// Set STATUS_ALRT field
-    pub fn set_rslt_alrt_enable(mut self, rslt_alrt_enable : bool) -> Self {
+    pub fn set_rslt_alrt_enable(mut self, rslt_alrt_enable: bool) -> Self {
         self.config = self.config & !(0b1 << 8) | ((rslt_alrt_enable as u16) << 8);
         self
     }
 
     /// Set ThrxCount field
-    pub fn set_thrx_count(mut self, thrx_count : ThrxCount) -> Self {
+    pub fn set_thrx_count(mut self, thrx_count: ThrxCount) -> Self {
         self.config = self.config & !(0b11 << 4) | ((thrx_count as u16) << 4);
         self
     }
 
     /// Set T_THRX_ALRT field
-    pub fn set_t_thrx_alrt_enable(mut self, t_thrx_alrt_enable : bool) -> Self {
+    pub fn set_t_thrx_alrt_enable(mut self, t_thrx_alrt_enable: bool) -> Self {
         self.config = self.config & !(0b1 << 3) | ((t_thrx_alrt_enable as u16) << 3);
         self
     }
-    
+
     /// Set Z_THRX_ALRT field
-    pub fn set_z_thrx_alrt_enable(mut self, z_thrx_alrt_enable : bool) -> Self {
+    pub fn set_z_thrx_alrt_enable(mut self, z_thrx_alrt_enable: bool) -> Self {
         self.config = self.config & !(0b1 << 2) | ((z_thrx_alrt_enable as u16) << 2);
         self
     }
-    
+
     /// Set Y_THRX_ALRT field
-    pub fn set_y_thrx_alrt_enable(mut self, y_thrx_alrt_enable : bool) -> Self {
+    pub fn set_y_thrx_alrt_enable(mut self, y_thrx_alrt_enable: bool) -> Self {
         self.config = self.config & !(0b1 << 1) | ((y_thrx_alrt_enable as u16) << 1);
         self
     }
-    
+
     /// Set X_THRX_ALRT field
-    pub fn set_x_thrx_alrt_enable(mut self, x_thrx_alrt_enable : bool) -> Self {
+    pub fn set_x_thrx_alrt_enable(mut self, x_thrx_alrt_enable: bool) -> Self {
         self.config = self.config & !(0b1 << 0) | ((x_thrx_alrt_enable as u16) << 0);
         self
     }
-    
 }
