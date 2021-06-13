@@ -2,7 +2,7 @@
 authors = ["Vsevolod Elantsev <13brain13@gmail.com>"]
 categories = ["embedded", "hardware-support", "no-std"]
 description = "A platform agnostic driver to interface with the TMAG5170-Q1 (3D hall sensor)"
-keywords = ["embedded-hal-driver", "hall sensor", "angle meter"]
+keywords = ["embedded", "embedded-hal-driver", "sensor", "hall_sensor", "angle_meter", "spi"]
 license = "MIT OR Apache-2.0"
 edition = "2018"
 readme = "README.md"
