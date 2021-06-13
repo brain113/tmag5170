@@ -14,18 +14,20 @@ pub enum DiagSel {
 }
 
 /// Selects a condition which initiates a single conversion
+#[allow(non_camel_case_types)]
 pub enum TriggerMode {
     /// Conversion Start at SPI Command Bits (default)
-    SPI = 0x00,
+    Spi = 0x00,
 
     /// nCS Sync Pulse
-    CS = 0x01,
+    Cs = 0x01,
 
     /// ALERT Sync Pulse
-    ALERT = 0x02,
+    Alert = 0x02,
 }
 
 /// Data Type to be accessed from results registers via SPI
+#[allow(non_camel_case_types)]
 pub enum DataType {
     /// Default 32-bit Register Access
     Default = 0x00,
@@ -61,16 +63,12 @@ impl SystemConfig {
     /// Creates default config
     pub fn new() -> Self {
         let config = 0x00;
-        let conf = SystemConfig { config };
-
-        conf
+        SystemConfig { config }
     }
 
     /// Creates config from u16 value
     pub fn form_u16(config: u16) -> Self {
-        let conf = SystemConfig { config };
-
-        conf
+        SystemConfig { config }
     }
 
     /// Convert config to u16 value
@@ -116,7 +114,13 @@ impl SystemConfig {
 
     /// Enables magnetic field limit check on X axis
     pub fn set_t_x_limit_check(mut self, x_limit_check: bool) -> Self {
-        self.config = self.config & !(0b1 << 0) | ((x_limit_check as u16) << 0);
+        self.config = self.config & !(0b1) | (x_limit_check as u16);
         self
+    }
+}
+
+impl Default for SystemConfig {
+    fn default() -> Self {
+        SystemConfig::new()
     }
 }

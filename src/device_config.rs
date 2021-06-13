@@ -74,16 +74,12 @@ impl DeviceConfig {
     /// Creates default config
     pub fn new() -> Self {
         let config = 0x00;
-        let conf = DeviceConfig { config };
-
-        conf
+        DeviceConfig { config }
     }
 
     /// Creates config from u16 value
     pub fn form_u16(config: u16) -> Self {
-        let conf = DeviceConfig { config };
-
-        conf
+        DeviceConfig { config }
     }
 
     /// Convert config to u16 value
@@ -129,7 +125,13 @@ impl DeviceConfig {
 
     /// Enables device on-chip temp sensor to improve linearization of magnetic sensor output
     pub fn set_t_comp_en(mut self, comp_en: bool) -> Self {
-        self.config = self.config & !(0b1 << 0) | ((comp_en as u16) << 0);
+        self.config = self.config & !(0b1) | (comp_en as u16);
         self
+    }
+}
+
+impl Default for DeviceConfig {
+    fn default() -> Self {
+        DeviceConfig::new()
     }
 }

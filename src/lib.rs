@@ -53,9 +53,7 @@ where
     /// Creates a new driver from a SPI peripheral and a NCS pin
     pub fn new(spi: SPI, cs: CS) -> Self {
         let crc = Crc::<u8>::new(0x03, 4, 0x0f, 0x00, false);
-        let tmag5170 = Tmag5170 { spi, cs, crc };
-
-        tmag5170
+        Tmag5170 { spi, cs, crc }
     }
 
     fn write_register(&mut self, reg: Register, value: u16, cmd: u8) -> Result<(), ExtError<E>> {

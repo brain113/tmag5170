@@ -47,16 +47,12 @@ impl AlertConfig {
     /// Creates default config
     pub fn new() -> Self {
         let config = 0x00;
-        let conf = AlertConfig { config };
-
-        conf
+        AlertConfig { config }
     }
 
     /// Creates config from u16 value
     pub fn form_u16(config: u16) -> Self {
-        let conf = AlertConfig { config };
-
-        conf
+        AlertConfig { config }
     }
 
     /// Convert config to u16 value
@@ -114,7 +110,13 @@ impl AlertConfig {
 
     /// Set X_THRX_ALRT field
     pub fn set_x_thrx_alrt_enable(mut self, x_thrx_alrt_enable: bool) -> Self {
-        self.config = self.config & !(0b1 << 0) | ((x_thrx_alrt_enable as u16) << 0);
+        self.config = self.config & !(0b1) | (x_thrx_alrt_enable as u16);
         self
+    }
+}
+
+impl Default for AlertConfig {
+    fn default() -> Self {
+        AlertConfig::new()
     }
 }

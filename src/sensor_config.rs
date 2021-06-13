@@ -4,13 +4,13 @@ pub enum AngleEn {
     NoAngle = 0x00,
 
     /// X-Y-angle calculation enabled
-    XY = 0x01,
+    Xy = 0x01,
 
     /// Y-Z-angle calculation enabled
-    YZ = 0x02,
+    Yz = 0x02,
 
     /// Z-X-angle calculation enabled
-    ZX = 0x03,
+    Zx = 0x03,
 }
 
 /// Selects the time spent in low power mode between conversions
@@ -48,6 +48,7 @@ pub enum SleepTime {
 }
 
 /// Enables data acquisition of the magnetic axis channel(s)
+#[allow(non_camel_case_types)]
 pub enum MagChEn {
     /// All magnetic channels of OFF
     Off = 0x00,
@@ -59,43 +60,43 @@ pub enum MagChEn {
     Y = 0x02,
 
     /// XY channel enabled
-    XY = 0x03,
+    Xy = 0x03,
 
     /// Z channel enabled
     Z = 0x04,
 
     /// ZX channel enabled
-    ZX = 0x05,
+    Zx = 0x05,
 
     /// YZ channel enabled
-    YZ = 0x06,
+    Yz = 0x06,
 
     /// XYZ channel enabled
-    XYZ = 0x07,
+    Xyz = 0x07,
 
     /// XYX channel enabled
-    XYX = 0x08,
+    Xyx = 0x08,
 
     /// YXY channel enabled
-    YXY = 0x09,
+    Yxy = 0x09,
 
     /// YZY channel enabled
-    YZY = 0x0a,
+    Yzy = 0x0a,
 
     /// ZYZ channel enabled
-    ZYZ = 0x0b,
+    Zyz = 0x0b,
 
     /// ZXZ channel enabled
-    ZXZ = 0x0c,
+    Zxz = 0x0c,
 
     /// XZX channel enabled
-    XZX = 0x0d,
+    Xzx = 0x0d,
 
     /// XYZYX channel enabled
-    XYZYX = 0x0e,
+    Xyzyx = 0x0e,
 
     /// XYZZYX channel enabled
-    XYZZYX = 0x0f,
+    Xyzzyx = 0x0f,
 }
 
 /// Enables different magnetic ranges
@@ -120,16 +121,12 @@ impl SensorConfig {
     /// Creates default config
     pub fn new() -> Self {
         let config = 0x00;
-        let conf = SensorConfig { config };
-
-        conf
+        SensorConfig { config }
     }
 
     /// Creates config from u16 value
     pub fn form_u16(config: u16) -> Self {
-        let conf = SensorConfig { config };
-
-        conf
+        SensorConfig { config }
     }
 
     /// Convert config to u16 value
@@ -169,7 +166,13 @@ impl SensorConfig {
 
     /// Set X Range field
     pub fn set_x_range(mut self, x_range: Range) -> Self {
-        self.config = self.config & !(0b11 << 0) | ((x_range as u16) << 0);
+        self.config = self.config & !(0b11) | (x_range as u16);
         self
+    }
+}
+
+impl Default for SensorConfig {
+    fn default() -> Self {
+        SensorConfig::new()
     }
 }

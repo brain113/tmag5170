@@ -54,9 +54,9 @@ fn main() -> ! {
     let mut tmag5170 = tmag5170::Tmag5170::new(spi, cs);
 
     let config = sensor_config::SensorConfig::new()
-        .set_angle_en(sensor_config::AngleEn::XY)
+        .set_angle_en(sensor_config::AngleEn::Xy)
         .set_sleep_time(sensor_config::SleepTime::Ms500)
-        .set_mag_ch_en(sensor_config::MagChEn::XYZ)
+        .set_mag_ch_en(sensor_config::MagChEn::Xyz)
         .set_z_range(sensor_config::Range::A1_100mT_A2_300mT)
         .set_y_range(sensor_config::Range::A1_100mT_A2_300mT)
         .set_x_range(sensor_config::Range::A1_100mT_A2_300mT);
@@ -64,7 +64,7 @@ fn main() -> ! {
 
     let config = system_config::SystemConfig::new()
         .set_diag_sel(system_config::DiagSel::AllDataInSeq)
-        .set_trigger_mode(system_config::TriggerMode::SPI)
+        .set_trigger_mode(system_config::TriggerMode::Spi)
         .set_data_type(system_config::DataType::AM)
         .set_diag_sel(system_config::DiagSel::AllDataInSeq)
         .set_diag_en(false)
